@@ -1,8 +1,10 @@
-package org.skmnservice.boardapp.board;
+package org.skmnservice.boardapp.board.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.skmnservice.boardapp.board.Post;
+import org.skmnservice.boardapp.board.QPost;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
