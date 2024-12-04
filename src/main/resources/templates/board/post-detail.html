@@ -2,6 +2,21 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>게시글 상세</title>
+    <style>
+        .attachment-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .attachment-preview img {
+            max-width: 200px;
+            max-height: 200px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
 <h1>게시글 상세</h1>
@@ -26,23 +41,35 @@
 <p><strong>조회수:</strong> <span th:text="${post.viewCount}"></span></p>
 <p><strong>작성일:</strong> <span th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}"></span></p>
 
+<!-- 첨부파일 목록 -->
+<div th:if="${not #lists.isEmpty(post.attachments)}">
+    <h2>첨부파일</h2>
+    <div class="attachment-preview">
+        <div th:each="attachment : ${post.attachments}">
+            <!-- 이미지 미리보기 -->
+            <div th:if="${#strings.startsWith(attachment.fileType, 'image/')}">
+                <a th:href="@{/files/{id}(id=${attachment.id})}" target="_blank">
+                    <img th:src="@{/files/{id}(id=${attachment.id})}"
+                         th:alt="${attachment.fileName}"
+                         th:title="${attachment.fileName}">
+                </a>
+            </div>
+
+            <!-- 이미지가 아닌 경우 파일명만 표시 -->
+            <div th:if="${!#strings.startsWith(attachment.fileType, 'image/')}">
+                <a th:href="@{/files/{id}(id=${attachment.id})}"
+                   th:text="${attachment.fileName}"
+                   target="_blank"></a>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- 게시글 내용 -->
 <div>
     <h3>내용:</h3>
     <p th:text="${post.content}"></p>
 </div>
-
-<!--&lt;!&ndash; 첨부파일 &ndash;&gt;-->
-<!--<div th:if="${not #lists.isEmpty(post.attachments)}">-->
-<!--    <h3>첨부파일:</h3>-->
-<!--    <ul>-->
-<!--        <li th:each="attachment : ${post.attachments}">-->
-<!--            <a th:href="@{/attachments/{id}(id=${attachment.id})}"-->
-<!--               th:text="${attachment.fileName}"></a>-->
-<!--        </li>-->
-<!--    </ul>-->
-<!--</div>-->
-<!--<p th:if="${#lists.isEmpty(post.attachments)}">첨부파일이 없습니다.</p>-->
 
 <!-- 목록으로 돌아가기 -->
 <a th:href="@{/api/posts}">목록으로 돌아가기</a>
