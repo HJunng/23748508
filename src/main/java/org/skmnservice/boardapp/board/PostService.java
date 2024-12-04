@@ -1,5 +1,6 @@
 package org.skmnservice.boardapp.board;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.skmnservice.boardapp.board.dto.PostDetailDto;
@@ -10,6 +11,7 @@ import org.skmnservice.boardapp.user.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -73,6 +75,43 @@ public class PostService {
                 .build();
 
         postRepository.save(post);
+    }
+
+    /**
+     * 글 수정
+     */
+    public void modifyPost(String username, Long postId, PostRequestDto dto) {
+        //게시글 검색
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다."));
+
+        // 작성자 검증
+        if(!validateAuthor(post, username)) {
+            throw new AccessDeniedException("작성자만 접근할 수 있습니다.");
+        }
+        log.info("게시글 수정 : "+postId);
+        
+        post.setTitle(dto.getTitle());
+        post.setContent(dto.getContent());
+//        post.setAttachments(new ArrayList<>()); // todo
+        postRepository.save(post);
+    }
+
+    public void deletePost(String username, Long postId) {
+        //게시글 검색
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다."));
+
+        // 작성자 검증
+        if(!validateAuthor(post, username)) {
+            throw new AccessDeniedException("작성자만 접근할 수 있습니다.");
+        }
+
+        postRepository.delete(post);
+    }
+
+    private boolean validateAuthor(Post post, String username) {
+        return post.getUser().getUsername().equals(username);
     }
 
 }
