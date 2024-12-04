@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+</head>
+<body>
+<h1>Register</h1>
+<form th:action="@{/auth/register}" method="post">
+    <label for="username">아이디:</label>
+    <input type="text" id="username" name="username" required>
+    <br>
+    <label for="password">비밀번호:</label>
+    <input type="password" id="password" name="password" required>
+    <br>
+    <label for="name">성명:</label>
+    <input type="text" id="name" name="name" required>
+    <br>
+    <button type="submit">Register</button>
+</form>
+
+<p th:if="${error}" style="color: red;">[[${error}]]</p>
+</body>
+</html>
