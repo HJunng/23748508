@@ -23,6 +23,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable) // jwt 사용하기 때문에 csrf 보호 없앰.
+
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("api/posts/write", "api/posts/edit/**", "api/posts/delete/**").authenticated()
                         .anyRequest().permitAll() // 그 외 요청은 인증 필요
@@ -34,6 +35,7 @@ public class SecurityConfig {
                         .failureUrl("/auth/login?error=true") // 로그인 실패 시 경로
                         .permitAll()
                 )
+
                 .logout(logout -> logout
                         .logoutUrl("/auth/logout") // 로그아웃 처리 URL
                         .logoutSuccessUrl("/auth/login?logout=true") // 로그아웃 성공 시 경로
