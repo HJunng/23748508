@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>글 작성</title>
+</head>
+<body>
+<h1>글 작성</h1>
+
+<!-- 글 작성 폼 -->
+<form th:action="@{/api/posts/write}" method="post" enctype="multipart/form-data">
+    <!-- 제목 -->
+    <div>
+        <label for="title">제목</label>
+        <input type="text" id="title" name="title" placeholder="제목을 입력하세요" required>
+    </div>
+
+    <!-- 내용 -->
+    <div>
+        <label for="content">내용</label>
+        <textarea id="content" name="content" placeholder="내용을 입력하세요" rows="10" required></textarea>
+    </div>
+
+    <!-- 첨부파일 -->
+    <div>
+        <label for="attachments">첨부파일</label>
+        <input type="file" id="attachments" name="attachments" multiple>
+    </div>
+
+    <!-- 버튼 -->
+    <div>
+        <button type="submit">작성 완료</button>
+        <button type="button" onclick="window.location.href='/api/posts';">취소</button>
+    </div>
+</form>
+
+</body>
+</html>

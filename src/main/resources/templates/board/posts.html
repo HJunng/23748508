@@ -6,6 +6,12 @@
 <body>
 <h1>게시글 목록</h1>
 
+<!-- 글 작성 버튼 -->
+<form th:action="@{/api/posts/write}" method="get">
+    <button type="submit">글쓰기</button>
+</form>
+
+
 <!-- 검색 폼 -->
 <form th:action="@{/api/posts}" method="get">
     <input type="text" name="keyword" th:value="${keyword}" placeholder="검색어를 입력하세요">
