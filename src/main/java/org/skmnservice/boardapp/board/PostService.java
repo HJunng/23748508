@@ -1,11 +1,13 @@
 package org.skmnservice.boardapp.board;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.skmnservice.boardapp.board.dto.PostDetailDto;
 import org.skmnservice.boardapp.board.dto.PostListDto;
 import org.skmnservice.boardapp.board.dto.PostRequestDto;
+import org.skmnservice.boardapp.board.repository.PostRepository;
 import org.skmnservice.boardapp.user.User;
 import org.skmnservice.boardapp.user.UserRepository;
 import org.springframework.data.domain.Page;
@@ -14,8 +16,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -24,6 +27,7 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final AttachmentService attachmentService;
 
     /**
      * 전체 게시판 목록
@@ -58,28 +62,39 @@ public class PostService {
     /**
      * 글 작성
      */
+    @Transactional // 하나의 트랜잭션으로 실행
     public void createPost(String username, PostRequestDto dto) {
         log.info("글 작성자 : "+username);
 
-        // 사용자 정보 확인
-        User user = userRepository.findUserByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
+        try {
+            // 사용자 정보 확인
+            User user = userRepository.findUserByUsername(username)
+                    .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
 
-        // todo : 첨부파일 관리
-        // 게시글 생성
-        Post post = Post.builder()
-                .user(user)
-                .title(dto.getTitle())
-                .content(dto.getContent())
-                .attachments(new ArrayList<>())
-                .build();
+            // 게시글 생성
+            Post post = Post.builder()
+                    .user(user)
+                    .title(dto.getTitle())
+                    .content(dto.getContent())
+                    .build();
 
-        postRepository.save(post);
+            postRepository.save(post);
+
+            // 첨부파일이 있는 경우만 저장
+            List<MultipartFile> attachments = dto.getAttachments();
+            if (attachments != null && !attachments.isEmpty()) {
+                attachmentService.saveAttachments(post, attachments);
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException("게시글 저장 중 오류 발생: " + e.getMessage(), e);
+        }
     }
 
     /**
      * 글 수정
      */
+    @Transactional
     public void modifyPost(String username, Long postId, PostRequestDto dto) {
         //게시글 검색
         Post post = postRepository.findById(postId)
@@ -93,7 +108,13 @@ public class PostService {
         
         post.setTitle(dto.getTitle());
         post.setContent(dto.getContent());
-//        post.setAttachments(new ArrayList<>()); // todo
+
+        // 첨부파일이 있는 경우만 저장
+        List<MultipartFile> attachments = dto.getAttachments();
+        if (attachments != null && !attachments.isEmpty()) {
+            attachmentService.saveAttachments(post, attachments);
+        }
+
         postRepository.save(post);
     }
 
