@@ -2,11 +2,13 @@ package org.skmnservice.boardapp.board;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.skmnservice.boardapp.board.dto.PostDetailDto;
 import org.skmnservice.boardapp.board.dto.PostListDto;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -37,5 +39,20 @@ public class PostController {
         model.addAttribute("keyword", (keyword != null) ? keyword : "");
 
         return "board/posts";
+    }
+
+    /**
+     * 게시글 1건 상세 조회
+     * todo : Attachment 보여주는 페이지 구성.
+     */
+    @GetMapping("/posts/{id}")
+    public String getPost(@PathVariable Long id, Model model) {
+        log.info("post id : "+id);
+
+        // 게시글 정보 조회
+        PostDetailDto post = postService.getPost(id);
+
+        model.addAttribute("post", post);
+        return "board/post-detail"; // 상세보기 페이지로 이동
     }
 }

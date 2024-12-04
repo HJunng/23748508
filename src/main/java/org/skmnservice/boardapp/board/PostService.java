@@ -2,6 +2,7 @@ package org.skmnservice.boardapp.board;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.skmnservice.boardapp.board.dto.PostDetailDto;
 import org.skmnservice.boardapp.board.dto.PostListDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,4 +26,24 @@ public class PostService {
         return postRepository.findAllPostsByTitleAndByUsername(keyword, pageable)
                 .map(PostListDto::of);
     }
+
+    // 게시글 상세 조회
+    public PostDetailDto getPost(Long id) {
+        // 조회수 증가
+        incrementViewCount(id);
+
+        Post post =  postRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("게시글이 존재하지 않습니다."));
+
+        return PostDetailDto.of(post);
+    }
+
+    // 조회수 증가
+    private void incrementViewCount(Long id) {
+        postRepository.findById(id).ifPresent(post -> {
+            post.setViewCount(post.getViewCount() + 1);
+            postRepository.save(post);
+        });
+    }
+
 }

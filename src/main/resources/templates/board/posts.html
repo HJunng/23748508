@@ -28,7 +28,7 @@
         <td colspan="5">게시글이 없습니다.</td>
     </tr>
     <!-- postList 반복 출력 -->
-    <tr th:each="post : ${postList}">
+    <tr th:each="post : ${postList}" th:attr="onclick='window.location=\'/api/posts/' + ${post.id} + '\';'" style="cursor: pointer;">
         <td th:text="${post.title}"></td>
         <td th:text="${post.username}"></td>
         <td th:text="${post.viewCount}"></td>
