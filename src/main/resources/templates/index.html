@@ -1,10 +1,209 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko">
 <head>
-    <title>Home</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SK m&service Portfolio</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-<h1>Welcome to the Home Page</h1>
-<a href="/api/auth/logout">Logout</a>
+<!-- 헤더 -->
+<header class="header text-center">
+    <div class="container">
+        <h1>SK m&service 개발 코딩테스트</h1>
+        <p>임현정 | 웹 개발자 (Backend Specialist)</p>
+    </div>
+</header>
+
+<div class="container my-5">
+    <!-- 프로젝트 개요 -->
+    <section class="mb-5 p-4 rounded">
+        <h2 class="section-title">프로젝트 개요</h2>
+        <p>
+            본 프로젝트는 <strong>Spring Boot</strong>와 <strong>JPA</strong>를 활용하여 <strong>사용자 인증</strong>,
+            <strong>게시글 CRUD</strong>, <strong>페이징 처리</strong> 등을 포함한 기능을 개발했습니다.
+            주요 목표는 <strong>안정적</strong>이고 <strong>확장 가능한 백엔드 시스템</strong>을 구현하는 것이며,
+            <strong>Thymeleaf</strong>를 통해 서버에서 동적으로 HTML을 렌더링하여 사용자와 상호작용합니다.
+            RESTful API 대신 <strong>서버 사이드 렌더링</strong>(Server-Side Rendering, SSR)을 기반으로 페이지를 제공하여
+            초기 로드 속도를 최적화하고 검색 엔진 친화적인 설계를 구현했습니다.
+        </p>
+    </section>
+
+    <!-- 관련 산출물 -->
+    <section class="mb-5 p-4 rounded">
+        <h2 class="section-title">관련 산출물</h2>
+        <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between align-items-center clickable" data-href="https://round-throat-587.notion.site/SK-14d1eb2dd4d180c58aecf400ce8cb6de?pvs=4">
+                <div>
+                    <i class="bi bi-journal-text text-salmon"></i>
+                    <strong class="text-salmon">Notion</strong>
+                    <p class="mb-0 text-muted">프로젝트 관리 및 추가 산출물</p>
+                </div>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center clickable" data-href="https://round-throat-587.notion.site/ffdcbdecb8ee4696ab523544c81b8454?pvs=4">
+                <div>
+                    <i class="bi bi-file-earmark-text-fill text-primary"></i>
+                    <strong class="text-burgundy">요구사항 명세서</strong>
+                    <p class="mb-0 text-muted">프로젝트 요구사항 및 상세 명세</p>
+                </div>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center clickable" data-href="https://round-throat-587.notion.site/API-14d1eb2dd4d181229906ca405e36fe52?pvs=4">
+                <div>
+                    <i class="bi bi-file-earmark-code-fill text-primary"></i>
+                    <strong class="text-burgundy">API 명세서</strong>
+                    <p class="mb-0 text-muted">API 엔드포인트 및 데이터 구조</p>
+                </div>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center clickable" data-href="https://www.erdcloud.com/d/5gj5FabCDLksBgwu9">
+                <div>
+                    <i class="bi bi-diagram-3-fill text-primary"></i>
+                    <strong class="text-burgundy">ERD 다이어그램</strong>
+                    <p class="mb-0 text-muted">데이터베이스 구조 설계</p>
+                </div>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center clickable" data-href="https://github.com/HJunng/23748508">
+                <div>
+                    <i class="bi bi-github text-primary"></i>
+                    <strong class="text-burgundy">GitHub Repository</strong>
+                    <p class="mb-0 text-muted">프로젝트 소스 코드 및 관련 문서</p>
+                </div>
+            </li>
+        </ul>
+    </section>
+
+
+    <script>
+        // JavaScript로 li 클릭 시 이동 설정
+        document.querySelectorAll('.clickable').forEach(item => {
+            item.addEventListener('click', event => {
+                const href = item.getAttribute('data-href');
+                if (href) {
+                    window.open(href, '_blank');
+                }
+            });
+        });
+    </script>
+
+
+    <!-- 구현 과제 -->
+    <section>
+        <h2 class="section-title">구현 과제</h2>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            <!-- 로그인 -->
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">로그인</h3>
+                        <p class="card-text">
+                            사용자가 아이디와 비밀번호를 입력하면 서버는 입력값을 데이터베이스와 비교해 인증합니다. 인증 성공 시 세션(Session)을 생성해 로그인 상태를 유지합니다.
+                        </p>
+                        <ul>
+                            <li>Spring Security</li>
+                            <li>H2</li>
+                            <li>Thymeleaf</li>
+                        </ul>
+                        <a href="/auth/login" target="_blank" class="btn btn-get btn-sm">POST /auth/login</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 로그아웃 -->
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">로그아웃</h3>
+                        <p class="card-text">
+                            사용자가 로그아웃을 요청하면 서버는 세션 ID를 무효화하여 로그인 상태를 종료합니다.
+                        </p>
+                        <ul>
+                            <li>Spring Security</li>
+                            <li>Session Management</li>
+                        </ul>
+                        <a href="/auth/logout" target="_blank" class="btn btn-post btn-sm">POST /auth/logout</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 게시판 목록 -->
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">게시판 목록</h3>
+                        <p class="card-text">
+                            제목, 작성자 ID, 조회수, 첨부파일 여부, 작성일 등 게시글 정보를 페이징 처리하여 출력합니다. 키워드로 게시글 검색이 가능합니다.
+                        </p>
+                        <ul>
+                            <li>Spring Boot</li>
+                            <li>JPA</li>
+                            <li>H2</li>
+                        </ul>
+                        <a href="/api/posts" target="_blank" class="btn btn-get btn-sm">GET /api/posts</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 게시판 보기 -->
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">게시판 보기</h3>
+                        <p class="card-text">
+                            선택한 게시글의 제목, 작성자, 작성일, 조회수, 내용을 상세히 출력하며, 조회수가 증가합니다.
+                        </p>
+                        <ul>
+                            <li>JPA</li>
+                            <li>H2</li>
+                        </ul>
+                        <a href="/api/posts/{id}" target="_blank" class="btn btn-get btn-sm">GET /api/posts/{id}</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 게시판 작성 -->
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">게시판 작성</h3>
+                        <p class="card-text">
+                            인증된 사용자만 게시글 작성이 가능하며, 제목과 내용을 입력하고 파일을 첨부할 수 있습니다.
+                        </p>
+                        <ul>
+                            <li>Spring Security</li>
+                            <li>MultipartFile</li>
+                        </ul>
+                        <a href="/api/posts/write" target="_blank" class="btn btn-post btn-sm">POST /api/posts/write</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 게시물 수정/삭제 -->
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">게시물 수정/삭제</h3>
+                        <p class="card-text">
+                            본인이 작성한 게시글만 수정 및 삭제할 수 있습니다.
+                        </p>
+                        <ul>
+                            <li>Spring Security</li>
+                            <li>JPA</li>
+                        </ul>
+                        <a href="/api/posts/{id}/edit" target="_blank" class="btn btn-put btn-sm">PUT /api/posts/{id}/edit</a>
+                        <a href="/api/posts/{id}" target="_blank" class="btn btn-delete btn-sm">DELETE /api/posts/{id}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<footer class="footer">
+    &copy; 2024. All rights reserved. | <a href="#">Contact Me</a>
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
