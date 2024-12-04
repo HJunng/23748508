@@ -30,6 +30,7 @@ public class PostController {
         Model model
     ) {
         Page<PostListDto> posts = postService.searchPosts(keyword, page);
+        log.info("totalPages : "+posts.getTotalPages());
         List<PostListDto> postList = (posts != null) ? posts.getContent() : List.of();
 
 

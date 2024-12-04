@@ -32,7 +32,7 @@
         <td th:text="${post.title}"></td>
         <td th:text="${post.username}"></td>
         <td th:text="${post.viewCount}"></td>
-        <td th:text="${post.hasAttachments ? '✔️' : ' '}"></td>
+        <td th:text="${post.hasAttachments ? '✔️' : '❌'}"></td>
         <td th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
     </tr>
     </tbody>
