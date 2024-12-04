@@ -39,7 +39,7 @@
             <a th:href="@{/auth/logout}" class="btn btn-outline-danger btn-sm">로그아웃</a>
         </span>
         <!-- 비로그인 상태 -->
-        <span th:if="${!#authentication.authenticated}">
+        <span th:if="${!#authentication.authenticated or #authentication.name == 'anonymousUser'}">
             <a th:href="@{/auth/login}" class="btn btn-primary btn-sm">로그인</a>
             <a th:href="@{/auth/signup}" class="btn btn-outline-secondary btn-sm">회원가입</a>
         </span>
