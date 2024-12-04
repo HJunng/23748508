@@ -24,8 +24,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable) // jwt 사용하기 때문에 csrf 보호 없앰.
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/login", "/auth/logout", "/", "/board", "/post").permitAll() // 로그인/로그아웃/홈페이지 허용
-                        .anyRequest().authenticated() // 그 외 요청은 인증 필요
+//                        .requestMatchers("**/write", "**/modify", "**/delete").hasRole("USER")
+                        .requestMatchers("/auth/login", "/auth/logout", "/", "/board", "/api/posts",
+                                "/board/posts").permitAll() // 로그인/로그아웃/홈페이지 허용
+                        .anyRequest().permitAll() // 그 외 요청은 인증 필요
                 )
                 .formLogin(form -> form
                         .loginPage("/auth/login") // 사용자 정의 로그인 페이지 경로

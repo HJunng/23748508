@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>게시글 목록</title>
+</head>
+<body>
+<h1>게시글 목록</h1>
+
+<!-- 검색 폼 -->
+<form th:action="@{/api/posts}" method="get">
+    <input type="text" name="keyword" th:value="${keyword}" placeholder="검색어를 입력하세요">
+    <button type="submit">검색</button>
+</form>
+
+<table>
+    <thead>
+    <tr>
+        <th>제목</th>
+        <th>작성자</th>
+        <th>조회수</th>
+        <th>첨부파일 여부</th>
+        <th>작성일</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- 데이터가 없는 경우 -->
+    <tr th:if="${#lists.isEmpty(postList)}">
+        <td colspan="5">게시글이 없습니다.</td>
+    </tr>
+    <!-- postList 반복 출력 -->
+    <tr th:each="post : ${postList}">
+        <td th:text="${post.title}"></td>
+        <td th:text="${post.username}"></td>
+        <td th:text="${post.viewCount}"></td>
+        <td th:text="${post.hasAttachments ? '✔️' : ' '}"></td>
+        <td th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<!-- 페이지네이션 -->
+<div>
+    <!-- postList가 비어 있지 않은 경우에만 페이지네이션 출력 -->
+    <ul th:if="${not #lists.isEmpty(postList)}">
+        <li th:each="i : ${#numbers.sequence(1, totalPages)}">
+            <a th:href="@{/api/posts(keyword=${keyword}, page=${i - 1})}"
+               th:text="${i}"
+               th:classappend="${i - 1 == currentPage} ? 'active' : ''"></a>
+        </li>
+    </ul>
+</div>
+
+</body>
+</html>
