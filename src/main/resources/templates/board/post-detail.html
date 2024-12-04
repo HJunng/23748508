@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>게시글 상세</title>
+</head>
+<body>
+<h1>게시글 상세</h1>
+
+<!-- 게시글 제목 -->
+<h2 th:text="${post.title}"></h2>
+
+<!-- 작성자, 조회수, 작성일 -->
+<p><strong>작성자:</strong> <span th:text="${post.username}"></span></p>
+<p><strong>조회수:</strong> <span th:text="${post.viewCount}"></span></p>
+<p><strong>작성일:</strong> <span th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}"></span></p>
+
+<!-- 게시글 내용 -->
+<div>
+    <h3>내용:</h3>
+    <p th:text="${post.content}"></p>
+</div>
+
+<!--&lt;!&ndash; 첨부파일 &ndash;&gt;-->
+<!--<div th:if="${not #lists.isEmpty(post.attachments)}">-->
+<!--    <h3>첨부파일:</h3>-->
+<!--    <ul>-->
+<!--        <li th:each="attachment : ${post.attachments}">-->
+<!--            <a th:href="@{/attachments/{id}(id=${attachment.id})}"-->
+<!--               th:text="${attachment.fileName}"></a>-->
+<!--        </li>-->
+<!--    </ul>-->
+<!--</div>-->
+<!--<p th:if="${#lists.isEmpty(post.attachments)}">첨부파일이 없습니다.</p>-->
+
+<!-- 목록으로 돌아가기 -->
+<a th:href="@{/api/posts}">목록으로 돌아가기</a>
+</body>
+</html>
