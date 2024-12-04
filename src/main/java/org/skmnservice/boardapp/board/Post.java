@@ -1,6 +1,7 @@
 package org.skmnservice.boardapp.board;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -44,4 +45,12 @@ public class Post {
     @UpdateTimestamp
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
+
+    @Builder
+    public Post(User user, String title, String content, List<Attachment> attachments) {
+        this.user = user;
+        this.title = title;
+        this.content = content;
+        this.attachments = attachments;
+    }
 }

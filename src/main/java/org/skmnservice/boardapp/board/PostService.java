@@ -4,10 +4,16 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.skmnservice.boardapp.board.dto.PostDetailDto;
 import org.skmnservice.boardapp.board.dto.PostListDto;
+import org.skmnservice.boardapp.board.dto.PostRequestDto;
+import org.skmnservice.boardapp.user.User;
+import org.skmnservice.boardapp.user.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 
 @Slf4j
 @Service
@@ -15,6 +21,7 @@ import org.springframework.stereotype.Service;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final UserRepository userRepository;
 
     /**
      * 전체 게시판 목록
@@ -44,6 +51,28 @@ public class PostService {
             post.setViewCount(post.getViewCount() + 1);
             postRepository.save(post);
         });
+    }
+
+    /**
+     * 글 작성
+     */
+    public void createPost(String username, PostRequestDto dto) {
+        log.info("글 작성자 : "+username);
+
+        // 사용자 정보 확인
+        User user = userRepository.findUserByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
+
+        // todo : 첨부파일 관리
+        // 게시글 생성
+        Post post = Post.builder()
+                .user(user)
+                .title(dto.getTitle())
+                .content(dto.getContent())
+                .attachments(new ArrayList<>())
+                .build();
+
+        postRepository.save(post);
     }
 
 }
