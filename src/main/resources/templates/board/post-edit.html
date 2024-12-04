@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>게시글 수정</title>
+</head>
+<body>
+<h1>게시글 수정</h1>
+
+<!-- 글 수정 폼 -->
+<form th:action="@{/api/posts/edit/{id}(id=${post.id})}" method="post" enctype="multipart/form-data">
+    <!-- _method hidden 필드 추가 -->
+    <input type="hidden" name="_method" value="PUT"/>
+    <!-- 제목 -->
+    <div>
+        <label for="title">제목</label>
+        <input type="text" id="title" name="title" th:value="${post.title}" placeholder="제목을 입력하세요" required>
+    </div>
+
+    <!-- 내용 -->
+    <div>
+        <label for="content">내용</label>
+        <textarea id="content" name="content" placeholder="내용을 입력하세요" rows="10" th:text="${post.content}" required></textarea>
+    </div>
+
+    <!-- 첨부파일 -->
+    <div>
+        <label for="attachments">첨부파일</label>
+        <input type="file" id="attachments" name="attachments" multiple>
+        <!-- 기존 첨부파일 목록 -->
+<!--        <ul>-->
+<!--            <li th:each="attachment : ${post.attachments}">-->
+<!--                <a th:href="@{/files/{id}(id=${attachment.id})}" th:text="${attachment.fileName}" target="_blank"></a>-->
+<!--                <span>(업로드됨)</span>-->
+<!--            </li>-->
+<!--        </ul>-->
+    </div>
+
+    <!-- 버튼 -->
+    <div>
+        <button type="submit">수정 완료</button>
+        <button type="button" onclick="history.back();">취소</button>
+    </div>
+</form>
+
+</body>
+</html>
