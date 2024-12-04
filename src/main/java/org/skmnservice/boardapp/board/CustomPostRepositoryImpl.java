@@ -25,8 +25,8 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
                 .selectFrom(post)
                 .where(
                         keyword != null ?
-                                post.title.startsWith(keyword)
-                                        .or(post.user.username.startsWith(keyword)) // OR 조건 추가
+                                post.title.lower().startsWith(keyword.toLowerCase())
+                                        .or(post.user.username.lower().startsWith(keyword.toLowerCase())) // OR 조건 추가
                                 : null
                 )
                 .orderBy(post.createdAt.desc()) // createdAt 기준 내림차순 정렬
