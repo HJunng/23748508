@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <style>
+        .error-message {
+            color: red;
+            font-weight: bold;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<h1>Login</h1>
+<form th:action="@{/auth/login}" method="post">
+    <label for="username">아이디:</label>
+    <input type="text" id="username" name="username" required>
+    <br>
+    <label for="password">비밀번호:</label>
+    <input type="password" id="password" name="password" required>
+    <br>
+    <button type="submit">Login</button>
+</form>
+
+<!--에러 메세지-->
+<p th:if="${error != null}" th:text="${error}" class="error-message">Error occurred</p>
+<p th:if="${logout}" th:text="${logout}" class="logout-message"></p>
+</body>
+</html>
