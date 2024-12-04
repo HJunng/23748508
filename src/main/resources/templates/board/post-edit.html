@@ -2,6 +2,43 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>게시글 수정</title>
+    <script>
+        // AJAX로 첨부파일 삭제 처리
+        function deleteAttachment(attachmentId) {
+            if (confirm('삭제하시겠습니까?')) {
+                fetch(`/files/${attachmentId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            // 삭제 성공 시 해당 항목 제거
+                            document.getElementById(`attachment-${attachmentId}`).remove();
+                        } else {
+                            alert('첨부파일 삭제에 실패했습니다.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('첨부파일 삭제 중 오류:', error);
+                        alert('첨부파일 삭제 중 문제가 발생했습니다.');
+                    });
+            }
+        }
+
+        // 폼 제출 시 비어 있는 파일 입력 제거
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.querySelector('form');
+            form.addEventListener('submit', function (event) {
+                const attachmentsInput = document.getElementById('attachments');
+                if (attachmentsInput && attachmentsInput.files.length === 0) {
+                    attachmentsInput.remove(); // 비어 있는 파일 입력 제거
+                }
+            });
+        });
+
+    </script>
 </head>
 <body>
 <h1>게시글 수정</h1>
@@ -24,15 +61,21 @@
 
     <!-- 첨부파일 -->
     <div>
-        <label for="attachments">첨부파일</label>
-        <input type="file" id="attachments" name="attachments" multiple>
         <!-- 기존 첨부파일 목록 -->
-<!--        <ul>-->
-<!--            <li th:each="attachment : ${post.attachments}">-->
-<!--                <a th:href="@{/files/{id}(id=${attachment.id})}" th:text="${attachment.fileName}" target="_blank"></a>-->
-<!--                <span>(업로드됨)</span>-->
-<!--            </li>-->
-<!--        </ul>-->
+        <ul>
+            <li th:each="attachment : ${post.attachments}" th:id="'attachment-' + ${attachment.id}">
+                <a th:href="@{/files/{id}(id=${attachment.id})}"
+                   th:text="${attachment.fileName}"
+                   target="_blank"></a>
+                <button type="button"
+                        th:onclick="'deleteAttachment(' + ${attachment.id} + ')'"
+                >삭제</button>
+            </li>
+        </ul>
+
+        <!-- 새 첨부파일 추가 -->
+        <label for="attachments">새 첨부파일 추가</label>
+        <input type="file" id="attachments" name="attachments" multiple>
     </div>
 
     <!-- 버튼 -->
