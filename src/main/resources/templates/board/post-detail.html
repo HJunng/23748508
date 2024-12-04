@@ -9,6 +9,18 @@
 <!-- 게시글 제목 -->
 <h2 th:text="${post.title}"></h2>
 
+<!-- 게시글 작성자인 경우에만 버튼 표시 -->
+<div th:if="${post.username == #authentication.name}">
+    <form th:action="@{/api/posts/edit/{id}(id=${post.id})}" method="get" style="display:inline;">
+        <button type="submit">수정</button>
+    </form>
+    <form th:action="@{/api/posts/delete/{id}(id=${post.id})}" method="post" onsubmit="return confirm('정말 삭제하시겠습니까?');" style="display:inline;">
+        <input type="hidden" name="_method" value="DELETE"/>
+        <button type="submit">삭제</button>
+    </form>
+</div>
+
+
 <!-- 작성자, 조회수, 작성일 -->
 <p><strong>작성자:</strong> <span th:text="${post.username}"></span></p>
 <p><strong>조회수:</strong> <span th:text="${post.viewCount}"></span></p>

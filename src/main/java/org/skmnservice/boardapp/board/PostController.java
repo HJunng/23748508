@@ -73,4 +73,29 @@ public class PostController {
         postService.createPost(principal.getName(), postRequestDto);
         return "redirect:/api/posts";
     }
+
+    @GetMapping("/posts/edit/{id}")
+    public String editPost(@PathVariable Long id, Principal principal, Model model) {
+
+        // 기존 내용 모델에 추가
+        PostDetailDto post = postService.getPost(id);
+        model.addAttribute("post", post);
+        return "board/post-edit";
+    }
+
+    @PutMapping("/posts/edit/{id}")
+    public String updatePost(@PathVariable Long id,
+                             @ModelAttribute PostRequestDto postRequestDto,
+                             Principal principal) {
+        // 수정 요청 처리
+        postService.modifyPost(principal.getName(), id, postRequestDto);
+        return "redirect:/api/posts/" + id;
+    }
+
+    @DeleteMapping("/posts/delete/{id}")
+    public String deletePost(@PathVariable Long id, Principal principal) {
+        // 삭제 요청 처리
+        postService.deletePost(principal.getName(), id);
+        return "redirect:/api/posts";
+    }
 }
