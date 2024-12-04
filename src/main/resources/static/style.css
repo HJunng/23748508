@@ -1,0 +1,226 @@
+/* 공통 테마 색상 */
+:root {
+    --primary-color: #C84630; /* 톤 다운된 빨강 */
+    --secondary-color: #343A40; /* 다크 그레이 */
+    --light-gray: #F8F9FA; /* 배경색 */
+    --card-bg: #FFFFFF; /* 카드 배경색 */
+    --get-color: #4CAF50; /* 녹색 */
+    --post-color: #2196F3; /* 파랑 */
+    --put-color: #FFC107; /* 노랑 */
+    --delete-color: #F44336; /* 빨강 */
+}
+
+/* 주요 색상 정의 */
+.text-burgundy {
+    color: #800020 !important; /* 버건디 */
+}
+
+.text-salmon {
+    color: #fa8072 !important; /* 살몬 핑크 */
+}
+
+/* 기본 레이아웃 */
+body {
+    background-color: var(--light-gray);
+}
+
+.header {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 2.5rem;
+}
+
+.header p {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+/* 섹션 스타일 */
+.section-title {
+    color: var(--primary-color);
+    border-left: 5px solid var(--primary-color);
+    padding-left: 10px;
+    margin-bottom: 20px;
+}
+
+.card {
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: var(--card-bg);
+}
+
+.card-title {
+    color: var(--primary-color);
+}
+
+/* 버튼 스타일 */
+.btn-get {
+    background-color: var(--get-color);
+    border-color: var(--get-color);
+    color: white;
+}
+
+.btn-post {
+    background-color: var(--post-color);
+    border-color: var(--post-color);
+    color: white;
+}
+
+.btn-put {
+    background-color: var(--put-color);
+    border-color: var(--put-color);
+    color: white;
+}
+
+.btn-delete {
+    background-color: var(--delete-color);
+    border-color: var(--delete-color);
+    color: white;
+}
+
+.btn-get:hover {
+    background-color: #45A049;
+}
+
+.btn-post:hover {
+    background-color: #1976D2;
+}
+
+.btn-put:hover {
+    background-color: #FFB300;
+}
+
+.btn-delete:hover {
+    background-color: #D32F2F;
+}
+
+/* 푸터 스타일 */
+.footer {
+    margin-top: 40px;
+    background-color: var(--secondary-color);
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+.footer a {
+    color: #FFD700; /* 연한 금색 */
+    text-decoration: none;
+}
+
+.footer a:hover {
+    color: #FFC107; /* 더 밝은 금색 */
+}
+
+.clickable {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.clickable:hover {
+    background-color: #f8f9fa;
+}
+
+
+.timeline {
+    position: relative;
+    padding-left: 40px;
+    border-left: 2px solid #ddd;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 20px;
+    padding-left: 20px;
+}
+
+.timeline-item:last-child {
+    margin-bottom: 0;
+}
+
+.timeline-icon {
+    position: absolute;
+    left: -25px;
+    top: 0;
+    width: 40px;
+    height: 40px;
+    background-color: var(--light-gray);
+    border: 2px solid var(--primary-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.timeline-icon i {
+    font-size: 1.5rem;
+}
+
+.timeline-content {
+    margin-left: 20px;
+}
+
+.timeline-content h5 {
+    margin-top: 0;
+    color: var(--primary-color);
+}
+
+/* 네비게이션 바 */
+.navbar {
+    background-color: var(--primary-color);
+}
+
+.nav-link {
+    color: white !important;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white !important;
+}
+
+.navbar-text {
+    font-size: 1.1rem;
+    color: white;
+}
+
+/* 제목 스타일 */
+.section-title {
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 10px;
+    margin-bottom: 30px;
+}
+
+/* 테이블 행 효과 */
+.table-row:hover {
+    background-color: var(--light-gray);
+    cursor: pointer;
+}
+
+/* 푸터 스타일 */
+.footer {
+    margin-top: 40px;
+    background-color: var(--secondary-color);
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+.footer a {
+    color: #FFD700; /* 연한 금색 */
+    text-decoration: none;
+}
+
+.footer a:hover {
+    color: #FFC107; /* 더 밝은 금색 */
+}

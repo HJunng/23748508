@@ -1,60 +1,118 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>게시글 목록</title>
+    <!-- Bootstrap CSS 추가 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom Style 추가 -->
+    <link href="/static/style.css" rel="stylesheet">
+    <style>
+        /* 상단 고정 영역 스타일 */
+        .top-bar {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #ddd;
+            padding: 15px 20px;
+            position: fixed; /* 상단 고정 */
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        /* 본문 */
+        .content {
+            margin-top: 100px; !important;
+        }
+    </style>
+
+
 </head>
 <body>
-<h1>게시글 목록</h1>
-
-<!-- 글 작성 버튼 -->
-<form th:action="@{/api/posts/write}" method="get">
-    <button type="submit">글쓰기</button>
-</form>
-
-
-<!-- 검색 폼 -->
-<form th:action="@{/api/posts}" method="get">
-    <input type="text" name="keyword" th:value="${keyword}" placeholder="검색어를 입력하세요">
-    <button type="submit">검색</button>
-</form>
-
-<table>
-    <thead>
-    <tr>
-        <th>제목</th>
-        <th>작성자</th>
-        <th>조회수</th>
-        <th>첨부파일 여부</th>
-        <th>작성일</th>
-    </tr>
-    </thead>
-    <tbody>
-    <!-- 데이터가 없는 경우 -->
-    <tr th:if="${#lists.isEmpty(postList)}">
-        <td colspan="5">게시글이 없습니다.</td>
-    </tr>
-    <!-- postList 반복 출력 -->
-    <tr th:each="post : ${postList}" th:attr="onclick='window.location=\'/api/posts/' + ${post.id} + '\';'" style="cursor: pointer;">
-        <td th:text="${post.title}"></td>
-        <td th:text="${post.username}"></td>
-        <td th:text="${post.viewCount}"></td>
-        <td th:text="${post.hasAttachments ? '✔️' : '❌'}"></td>
-        <td th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
-    </tr>
-    </tbody>
-</table>
-
-<!-- 페이지네이션 -->
-<div>
-    <!-- postList가 비어 있지 않은 경우에만 페이지네이션 출력 -->
-    <ul th:if="${not #lists.isEmpty(postList)}">
-        <li th:each="i : ${#numbers.sequence(1, totalPages)}">
-            <a th:href="@{/api/posts(keyword=${keyword}, page=${i - 1})}"
-               th:text="${i}"
-               th:classappend="${i - 1 == currentPage} ? 'active' : ''"></a>
-        </li>
-    </ul>
+<!-- 상단 고정 영역 -->
+<div class="top-bar d-flex justify-content-between align-items-center">
+    <div class="title">게시판</div>
+    <div class="auth-buttons">
+        <!-- 로그인 상태 -->
+        <span th:if="${#authentication.authenticated}">
+            <strong th:text="${#authentication.name}" class="text-primary"></strong>님 안녕하세요!
+            <a th:href="@{/auth/logout}" class="btn btn-outline-danger btn-sm">로그아웃</a>
+        </span>
+        <!-- 비로그인 상태 -->
+        <span th:if="${!#authentication.authenticated or #authentication.name == 'anonymousUser'}">
+            <a th:href="@{/auth/login}" class="btn btn-primary btn-sm">로그인</a>
+            <a th:href="@{/auth/signup}" class="btn btn-outline-secondary btn-sm">회원가입</a>
+        </span>
+    </div>
 </div>
 
+
+<!-- 컨테이너 -->
+<div class="container content">
+    <h1 class="text-center section-title">게시글 목록</h1>
+
+    <!-- 글 작성 버튼 -->
+    <div class="mb-3 text-end">
+        <form th:action="@{/api/posts/write}" method="get">
+            <button type="submit" class="btn btn-post">글쓰기</button>
+        </form>
+    </div>
+
+    <!-- 검색 폼 -->
+    <form th:action="@{/api/posts}" method="get" class="input-group mb-4">
+        <input type="text" name="keyword" th:value="${keyword}" class="form-control" placeholder="검색어를 입력하세요">
+        <button type="submit" class="btn btn-outline-secondary">검색</button>
+    </form>
+
+    <!-- 게시글 테이블 -->
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+        <tr>
+            <th scope="col">제목</th>
+            <th scope="col">작성자</th>
+            <th scope="col">조회수</th>
+            <th scope="col">첨부파일 여부</th>
+            <th scope="col">작성일</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- 데이터가 없는 경우 -->
+        <tr th:if="${#lists.isEmpty(postList)}">
+            <td colspan="5" class="text-center">게시글이 없습니다.</td>
+        </tr>
+        <!-- postList 반복 출력 -->
+        <tr th:each="post : ${postList}"
+            th:attr="onclick='window.location=\'/api/posts/' + ${post.id} + '\';'"
+            class="table-row">
+            <td th:text="${post.title}"></td>
+            <td th:text="${post.username}"></td>
+            <td th:text="${post.viewCount}"></td>
+            <td th:text="${post.hasAttachments ? '✔️' : '❌'}" class="text-center"></td>
+            <td th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- 페이지네이션 -->
+    <nav th:if="${not #lists.isEmpty(postList)}" aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            <li th:each="i : ${#numbers.sequence(1, totalPages)}" class="page-item"
+                th:classappend="${i - 1 == currentPage} ? 'active' : ''">
+                <a class="page-link"
+                   th:href="@{/api/posts(keyword=${keyword}, page=${i - 1})}"
+                   th:text="${i}"></a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<!-- 푸터 -->
+<footer class="footer">
+    <p>© 2024 게시판 서비스. 모든 권리 보유.</p>
+    <p><a href="#">이용 약관</a> | <a href="#">개인정보 보호정책</a></p>
+</footer>
+
+<!-- Bootstrap JS 추가 -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
